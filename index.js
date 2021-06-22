@@ -6,12 +6,12 @@ const port = process.env.SE_LAB_PORT || 8000;
 
 app.use(express.json());
 
-app.get("/btcRate", (request, response) => {
-    if (user.isValidToken(request.query.token)) {
-        response.send("TODO");
-    } else {
-        response.status(404).end();
-    }
+app.get("/btcRate", user.auth, (request, response) => {
+    const data = {
+        user: request.user,
+        rate: "TODO",
+    };
+    response.json(data);
 });
 
 app.post("/user/create", (request, response) => {
@@ -27,7 +27,7 @@ app.post("/user/login", (request, response) => {
 });
 
 app.use((request, response, next) => {
-    response.status(404).end();
+    response.sendStatus(404);
 });
 
 app.listen(port, () => console.log(`Listening at ${port}…`));
