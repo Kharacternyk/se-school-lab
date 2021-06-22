@@ -14,17 +14,8 @@ app.get("/btcRate", user.auth, (request, response) => {
     response.json(data);
 });
 
-app.post("/user/create", (request, response) => {
-    user.create(request.body);
-    response.end();
-});
-
-app.post("/user/login", (request, response) => {
-    const data = {
-        token: user.login(request.body),
-    };
-    response.json(data);
-});
+app.post("/user/create", user.parse, user.create);
+app.post("/user/login", user.parse, user.login);
 
 app.use((request, response, next) => {
     response.sendStatus(404);

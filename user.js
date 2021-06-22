@@ -1,4 +1,6 @@
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const fs = require("fs/promises");
 
 function getSecret() {
     return process.env.SE_LAB_SECRET;
@@ -25,10 +27,38 @@ exports.auth = (request, response, next) => {
     }
 }
 
-exports.create = userData => {
-    /*TODO*/
+exports.parse = (request, response, next) => {
+    if ((typeof request.body.email) != "string" ||
+        (typeof request.body.password) != "string") {
+        return response.sendStatus(400);
+    }
+    request.email = request.body.email;
+    request.password = request.body.password;
+    next();
 }
 
-exports.login = userData => {
-    return jwt.sign({email: userData.email}, getSecret(), {expiresIn: "600s"});
+exports.create = async (request, response) => {
+    response.sendStatus(200);
+    const mkdirPromise = fs.mkdir("./private/db", {recursive: true});
+    const hashPromise = bcrypt.hash(request.password, 8);
+    await mkdirPromise;
+    await fs.writeFile(`./private/db/${request.email}`, await hashPromise);
+}
+
+exports.login = async (request, response) => {
+    let hash;
+    try {
+        hash = await fs.readFile(`./private/db/${request.email}`, {encoding: "UTF-8"});
+    } catch (error) {
+        if (error.code === "ENOENT") {
+            return response.sendStatus(403);
+        }
+        throw error;
+    }
+    if (await bcrypt.compare(request.password, hash)) {
+        const token = jwt.sign({email: request.email}, getSecret(), {expiresIn: "600s"});
+        response.json(token);
+    } else {
+        response.sendStatus(403);
+    }
 }
