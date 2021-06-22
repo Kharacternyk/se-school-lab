@@ -1,12 +1,9 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const fs = require("fs/promises");
+const crypto = require("crypto");
 
-function getSecret() {
-    return process.env.SE_LAB_SECRET;
-}
-
-exports.auth = (request, response, next) => {
+exports.auth = secret => (request, response, next) => {
     const auth = request.headers.authorization;
     if (!auth) {
         return response.sendStatus(401);
@@ -16,7 +13,7 @@ exports.auth = (request, response, next) => {
         return response.sendStatus(401);
     }
     try {
-        request.user = jwt.verify(token, getSecret());
+        request.user = jwt.verify(token, secret);
         next();
     } catch (error) {
         if (error instanceof jwt.JsonWebTokenError) {
@@ -45,7 +42,7 @@ exports.create = async (request, response) => {
     await fs.writeFile(`./private/db/${request.email}`, await hashPromise);
 }
 
-exports.login = async (request, response) => {
+exports.login = secret => async (request, response) => {
     let hash;
     try {
         hash = await fs.readFile(`./private/db/${request.email}`, {encoding: "UTF-8"});
@@ -56,7 +53,7 @@ exports.login = async (request, response) => {
         throw error;
     }
     if (await bcrypt.compare(request.password, hash)) {
-        const token = jwt.sign({email: request.email}, getSecret(), {expiresIn: "600s"});
+        const token = jwt.sign({email: request.email}, secret, {expiresIn: "600s"});
         response.json(token);
     } else {
         response.sendStatus(403);
