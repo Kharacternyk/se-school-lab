@@ -23,8 +23,7 @@ app.post("/user/login", (request, response) => {
     const data = {
         token: user.login(request.body),
     };
-    response.setHeader('Content-Type', 'application/json');
-    response.send(JSON.stringify(data));
+    response.json(data);
 });
 
 app.use((request, response, next) => {
