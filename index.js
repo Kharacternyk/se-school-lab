@@ -1,6 +1,7 @@
 const user = require("./user");
-
 const express = require("express");
+const coinpaprika = new (require("@coinpaprika/api-nodejs-client"))();
+
 const app = express();
 const port = process.env.SE_LAB_PORT || 8000;
 
@@ -10,10 +11,14 @@ const secret = process.env.SE_LAB_SECRET || "DEMO_SECRET";
 
 app.use(express.json());
 
-app.get("/btcRate", user.auth(secret), (request, response) => {
+app.get("/btcRate", user.auth(secret), async (request, response) => {
+    const rate = (await coinpaprika.getAllTickers({
+        coinId: "btc-bitcoin",
+        quotes: ["UAH"],
+    })).quotes.UAH.price;
     const data = {
         user: request.user,
-        rate: "TODO",
+        rate: rate,
     };
     response.json(data);
 });
