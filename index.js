@@ -1,17 +1,19 @@
-const user = require("./user");
+const User = require("./models/user.js").User;
+/* One would use a longer value with bigger entropy for production.
+ * Beware that changing this value invalidates previously handed out tokens. */
+User.secret = process.env.SE_LAB_SECRET || "DEMO_SECRET";
+
+const user = require("./controllers/user.js");
+
 const express = require("express");
 const coinpaprika = new (require("@coinpaprika/api-nodejs-client"))();
 
 const app = express();
 const port = process.env.SE_LAB_PORT || 8000;
 
-/* One would use a longer value with bigger entropy for production.
- * Beware that changing this value invalidates previously handed out tokens. */
-const secret = process.env.SE_LAB_SECRET || "DEMO_SECRET";
-
 app.use(express.json());
 
-app.get("/btcRate", user.auth(secret), async (request, response) => {
+app.get("/btcRate", user.auth, async (request, response) => {
     const rate = (await coinpaprika.getAllTickers({
         coinId: "btc-bitcoin",
         quotes: ["UAH"],
@@ -24,7 +26,7 @@ app.get("/btcRate", user.auth(secret), async (request, response) => {
 });
 
 app.post("/user/create", user.parse, user.create);
-app.post("/user/login", user.parse, user.login(secret));
+app.post("/user/login", user.parse, user.login);
 
 app.use((request, response, next) => {
     response.sendStatus(404);
