@@ -4,7 +4,6 @@ import * as fs from "fs";
 import * as fc from "fast-check";
 
 fs.rmSync("./private/db", {force: true, recursive: true});
-jest.setTimeout(10000);
 
 test("can add a user and then login", () => fc.assert(fc.asyncProperty(
     fc.string({minLength: 1}),
@@ -28,5 +27,5 @@ test("can add a user and then login", () => fc.assert(fc.asyncProperty(
         if (token !== fakeToken) {
             expect(User.authenticate(fakeToken)).toBe(null);
         }
-    }))
-);
+    }), {interruptAfterTimeLimit: 4000}
+));
