@@ -9,7 +9,7 @@ exports.auth = (request, response, next) => {
     if (scheme !== "Bearer" || !token) {
         return response.sendStatus(401);
     }
-    const user = User.authenticate(token)
+    const user = User.authenticate(token);
     if (user) {
         request.user = user;
         next();

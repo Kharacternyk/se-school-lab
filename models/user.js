@@ -32,13 +32,13 @@ class User {
         if (typeof User._secret === "string") {
             return User._secret;
         }
-        throw TypeError("User.secret must be set to a string")
+        throw TypeError("User.secret must be set to a string");
     }
     static set secret(value) {
         if (typeof value === "string") {
             User._secret = value;
         } else {
-            throw TypeError("User.secret must be set to a string")
+            throw TypeError("User.secret must be set to a string");
         }
     }
     static authenticate(token) {
