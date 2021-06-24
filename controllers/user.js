@@ -1,4 +1,4 @@
-const User = require("../models/user.js").User;
+const User = require("../models/user.js");
 
 exports.auth = (request, response, next) => {
     const auth = request.headers.authorization;

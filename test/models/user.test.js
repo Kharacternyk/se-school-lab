@@ -1,7 +1,7 @@
 const fs = require("fs");
 const fc = require("fast-check");
 
-const User = require("../../models/user.js").User;
+const User = require("../../models/user.js");
 
 fs.rmdirSync("./private/db", {recursive: true});
 jest.setTimeout(10000);

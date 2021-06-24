@@ -1,6 +1,6 @@
 const coinpaprika = new (require("@coinpaprika/api-nodejs-client"))();
 
-exports.get = async (request, response) => {
+module.exports = async (request, response) => {
     const rate = (await coinpaprika.getAllTickers({
         coinId: "btc-bitcoin",
         quotes: ["UAH"],
