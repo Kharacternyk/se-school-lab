@@ -1,8 +1,8 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const fs = require("fs/promises");
+import jwt from "jsonwebtoken";
+import * as bcrypt from "bcrypt";
+import * as fs from "fs/promises";
 
-class User {
+export default class User {
     constructor(email) {
         this.email = email;
     }
@@ -53,5 +53,3 @@ class User {
         }
     }
 }
-
-module.exports = User;

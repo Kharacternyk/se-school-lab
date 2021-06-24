@@ -1,6 +1,6 @@
-const User = require("../models/user.js");
+import User from "../models/user.js";
 
-exports.auth = (request, response, next) => {
+export function auth(request, response, next) {
     const auth = request.headers.authorization;
     if (!auth) {
         return response.sendStatus(401);
@@ -18,7 +18,7 @@ exports.auth = (request, response, next) => {
     }
 }
 
-exports.parse = (request, response, next) => {
+export function parse(request, response, next) {
     if (typeof request.body.email != "string" ||
         typeof request.body.password != "string") {
         return response.sendStatus(400);
@@ -28,13 +28,13 @@ exports.parse = (request, response, next) => {
     next();
 }
 
-exports.create = async (request, response) => {
+export async function create(request, response) {
     response.sendStatus(200);
     const user = new User(request.email);
     await user.setPassword(request.password);
 }
 
-exports.login = async (request, response) => {
+export async function login(request, response) {
     const user = new User(request.email);
     const token = await user.login(request.password);
     if (token) {

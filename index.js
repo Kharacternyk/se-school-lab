@@ -1,12 +1,11 @@
-const User = require("./models/user.js");
+import User from "./models/user.js";
+import btcRate from "./controllers/btcRate.js";
+import * as user from "./controllers/user.js";
+import express from "express";
+
 /* One would use a longer value with bigger entropy for production.
  * Beware that changing this value invalidates previously handed out tokens. */
 User.secret = process.env.SE_LAB_SECRET || "DEMO_SECRET";
-
-const user = require("./controllers/user.js");
-const btcRate = require("./controllers/btcRate.js");
-
-const express = require("express");
 
 const app = express();
 const port = process.env.SE_LAB_PORT || 8000;

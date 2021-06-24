@@ -1,7 +1,8 @@
-const fs = require("fs");
-const fc = require("fast-check");
+import User from "../../models/user.js";
+import {jest} from "@jest/globals";
+import * as fs from "fs";
+import * as fc from "fast-check";
 
-const User = require("../../models/user.js");
 
 fs.rmdirSync("./private/db", {recursive: true});
 jest.setTimeout(10000);
