@@ -3,8 +3,7 @@ import {jest} from "@jest/globals";
 import * as fs from "fs";
 import * as fc from "fast-check";
 
-
-fs.rmdirSync("./private/db", {recursive: true});
+fs.rmSync("./private/db", {force: true, recursive: true});
 jest.setTimeout(10000);
 
 test("can add a user and then login", () => fc.assert(fc.asyncProperty(
