@@ -16,5 +16,7 @@ app.get("/btcRate", user.auth, btcRate);
 app.post("/user/create", user.parse, user.create);
 app.post("/user/login", user.parse, user.login);
 app.use((request, response, next) => response.sendStatus(404));
+app.use((error, request, response, next) =>
+        response.status(400).json({error: {message: error.message}}));
 
 app.listen(port, () => console.log(`Listening at ${port}…`));
