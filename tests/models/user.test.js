@@ -5,7 +5,7 @@ import * as fc from "fast-check";
 
 fs.rmSync("./private/db", {force: true, recursive: true});
 
-test("can add a user and then login", () => fc.assert(fc.asyncProperty(
+test("create/login/authenticate a user", () => fc.assert(fc.asyncProperty(
     fc.string({minLength: 1}),
     fc.emailAddress(),
     fc.string(),
