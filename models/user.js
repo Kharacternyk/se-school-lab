@@ -1,21 +1,24 @@
 import jwt from "jsonwebtoken";
+import {dirname} from "path";
 import * as bcrypt from "bcrypt";
 import * as fs from "fs/promises";
+import * as emailUtils from "../utils/email.js";
 
 export default class User {
     constructor(email) {
         this.email = email;
+        this.dbPath = "./private/db" + emailUtils.fsEscape(email);
     }
     async setPassword(password) {
-        const mkdirPromise = fs.mkdir("./private/db", {recursive: true});
+        const mkdirPromise = fs.mkdir(dirname(this.dbPath), {recursive: true});
         const hashPromise = bcrypt.hash(password, 8);
         await mkdirPromise;
-        await fs.writeFile(`./private/db/${this.email}`, await hashPromise);
+        await fs.writeFile(this.dbPath, await hashPromise);
     }
     async login(password) {
         let hash;
         try {
-            hash = await fs.readFile(`./private/db/${this.email}`, {encoding: "UTF-8"});
+            hash = await fs.readFile(this.dbPath, {encoding: "UTF-8"});
         } catch (error) {
             if (error.code === "ENOENT") {
                 return null;

@@ -7,7 +7,7 @@ fs.rmSync("./private/db", {force: true, recursive: true});
 
 test("can add a user and then login", () => fc.assert(fc.asyncProperty(
     fc.string({minLength: 1}),
-    fc.emailAddress().filter(email => !email.includes("/")),
+    fc.emailAddress(),
     fc.string(),
     fc.string(),
     fc.string(),
@@ -27,5 +27,11 @@ test("can add a user and then login", () => fc.assert(fc.asyncProperty(
         if (token !== fakeToken) {
             expect(User.authenticate(fakeToken)).toBe(null);
         }
-    }), {interruptAfterTimeLimit: 4000}
+    }), {
+        examples: [
+            /* Exceeds the filename length limit */
+            ["a", "a".repeat(300) + "@a.a", "a", "b", "a"]
+        ],
+        interruptAfterTimeLimit: 4000,
+    }
 ));
