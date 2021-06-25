@@ -14,7 +14,7 @@ export function auth(request, response, next) {
         request.user = user;
         next();
     } else {
-        response.sendStatus(403);
+        response.sendStatus(401);
     }
 }
 
@@ -41,6 +41,6 @@ export async function login(request, response) {
     if (token) {
         response.json(token);
     } else {
-        response.sendStatus(403);
+        response.sendStatus(401);
     }
 }
