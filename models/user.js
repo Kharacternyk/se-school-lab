@@ -15,7 +15,7 @@ export default class User {
         await mkdirPromise;
         await fs.writeFile(this._dbPath, await hashPromise);
     }
-    async login(password) {
+    async login(password, secret) {
         let hash;
         try {
             hash = await fs.readFile(this._dbPath, {encoding: "UTF-8"});
@@ -26,27 +26,14 @@ export default class User {
             throw error;
         }
         if (await bcrypt.compare(password, hash)) {
-            const token = jwt.sign({email: this.email}, User.secret, {expiresIn: "600s"});
+            const token = jwt.sign({email: this.email}, secret, {expiresIn: "600s"});
             return token;
         }
         return null;
     }
-    static get secret() {
-        if (typeof User._secret === "string") {
-            return User._secret;
-        }
-        throw TypeError("User.secret must be set to a string");
-    }
-    static set secret(value) {
-        if (typeof value === "string") {
-            User._secret = value;
-        } else {
-            throw TypeError("User.secret must be set to a string");
-        }
-    }
-    static authenticate(token) {
+    static authenticate(token, secret) {
         try {
-            return jwt.verify(token, User.secret);
+            return jwt.verify(token, secret);
         } catch (error) {
             if (error instanceof jwt.JsonWebTokenError) {
                 return null; 

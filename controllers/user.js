@@ -1,6 +1,6 @@
 import User from "../models/user.js";
 
-export function auth(request, response, next) {
+export const auth = secret => (request, response, next) => {
     const auth = request.headers.authorization;
     if (!auth) {
         return response.sendStatus(401);
@@ -9,7 +9,7 @@ export function auth(request, response, next) {
     if (scheme !== "Bearer" || !token) {
         return response.sendStatus(401);
     }
-    const user = User.authenticate(token);
+    const user = User.authenticate(token, secret);
     if (user) {
         request.user = user;
         next();
@@ -35,9 +35,9 @@ export async function create(request, response) {
     await user.setPassword(request.password);
 }
 
-export async function login(request, response) {
+export const login = secret => async (request, response) => {
     const user = new User(request.email);
-    const token = await user.login(request.password);
+    const token = await user.login(request.password, secret);
     if (token) {
         response.json(token);
     } else {
