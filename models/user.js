@@ -7,18 +7,18 @@ import * as emailUtils from "../utils/email.js";
 export default class User {
     constructor(email) {
         this.email = email;
-        this.dbPath = "./private/db" + emailUtils.fsEscape(email);
+        this._dbPath = "./private/db" + emailUtils.fsEscape(email);
     }
     async setPassword(password) {
-        const mkdirPromise = fs.mkdir(dirname(this.dbPath), {recursive: true});
+        const mkdirPromise = fs.mkdir(dirname(this._dbPath), {recursive: true});
         const hashPromise = bcrypt.hash(password, 8);
         await mkdirPromise;
-        await fs.writeFile(this.dbPath, await hashPromise);
+        await fs.writeFile(this._dbPath, await hashPromise);
     }
     async login(password) {
         let hash;
         try {
-            hash = await fs.readFile(this.dbPath, {encoding: "UTF-8"});
+            hash = await fs.readFile(this._dbPath, {encoding: "UTF-8"});
         } catch (error) {
             if (error.code === "ENOENT") {
                 return null;
@@ -46,7 +46,7 @@ export default class User {
     }
     static authenticate(token) {
         try {
-            return new User(jwt.verify(token, User.secret).email);
+            return jwt.verify(token, User.secret);
         } catch (error) {
             if (error instanceof jwt.JsonWebTokenError) {
                 return null; 

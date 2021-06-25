@@ -19,7 +19,7 @@ test("can add a user and then login", () => fc.assert(fc.asyncProperty(
         const token = await user.login(password);
         expect(token).toBeTruthy();
         expect(typeof token).toEqual("string");
-        expect(User.authenticate(token)).toEqual(user);
+        expect(User.authenticate(token).email).toEqual(email);
 
         if (password !== fakePassword) {
             expect(await user.login(fakePassword)).toBe(null);
