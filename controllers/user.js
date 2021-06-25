@@ -20,7 +20,8 @@ export function auth(request, response, next) {
 
 export function parse(request, response, next) {
     if (typeof request.body.email != "string" ||
-        typeof request.body.password != "string") {
+        typeof request.body.password != "string" ||
+        request.body.email.length === 0) {
         return response.sendStatus(400);
     }
     request.email = request.body.email;
