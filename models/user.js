@@ -4,9 +4,9 @@ import * as bcrypt from "bcrypt";
 import * as fs from "fs/promises";
 
 export default class User {
-    constructor(email) {
+    constructor(email, dbDir) {
         this.email = email;
-        this._dbPath = "./private/db" + fsEscape(email);
+        this._dbPath = dbDir + fsEscape(email);
     }
     async setPassword(password) {
         const mkdirPromise = fs.mkdir(dirname(this._dbPath), {recursive: true});
@@ -14,7 +14,7 @@ export default class User {
         await mkdirPromise;
         await fs.writeFile(this._dbPath, await hashPromise);
     }
-    async login(password, secret) {
+    async login(password, secret, tokenExpiresIn) {
         let hash;
         try {
             hash = await fs.readFile(this._dbPath, {encoding: "UTF-8"});
@@ -25,7 +25,11 @@ export default class User {
             throw error;
         }
         if (await bcrypt.compare(password, hash)) {
-            const token = jwt.sign({email: this.email}, secret, {expiresIn: "600s"});
+            const options = {};
+            if (tokenExpiresIn) {
+                options.expiresIn = tokenExpiresIn;
+            }
+            const token = jwt.sign({email: this.email}, secret, options);
             return token;
         }
         return null;

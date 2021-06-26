@@ -1,17 +1,21 @@
 import User from "../../models/user.js";
 import {jest} from "@jest/globals";
-import * as fs from "fs";
+import {tmpdir} from "os";
+import {mkdtemp} from "fs/promises";
 import * as fc from "fast-check";
+
+let dbDir;
+
+beforeAll(async () => dbDir = await mkdtemp(tmpdir() + "/"));
 
 test("create/login/authenticate a user", () => fc.assert(fc.asyncProperty(
     fc.string({minLength: 1}),
-    /* It filters out the email used in the E2E test to avoid a race condition */
-    fc.emailAddress().filter(email => email !== "end2end@email.org"),
+    fc.emailAddress(),
     fc.string(),
     fc.string(),
     fc.string(),
     async (secret, email, password, fakePassword, fakeToken) => {
-        const user = new User(email);
+        const user = new User(email, dbDir);
         await user.setPassword(password);
 
         const token = await user.login(password, secret);

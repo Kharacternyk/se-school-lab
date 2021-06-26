@@ -29,15 +29,15 @@ export function parse(request, response, next) {
     next();
 }
 
-export async function create(request, response) {
-    const user = new User(request.email);
+export const create = dbDir => async (request, response) => {
+    const user = new User(request.email, dbDir);
     await user.setPassword(request.password);
     response.sendStatus(200);
 }
 
-export const login = secret => async (request, response) => {
-    const user = new User(request.email);
-    const token = await user.login(request.password, secret);
+export const login = (secret, tokensExpireIn, dbDir) => async (request, response) => {
+    const user = new User(request.email, dbDir);
+    const token = await user.login(request.password, secret, tokensExpireIn);
     if (token) {
         response.json(token);
     } else {
