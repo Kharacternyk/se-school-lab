@@ -1,5 +1,4 @@
 import App from "../app.js";
-import User from "../models/user.js";
 import request from "supertest";
 
 const app = new App("JWT_SECRET");
