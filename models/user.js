@@ -2,12 +2,11 @@ import jwt from "jsonwebtoken";
 import {dirname} from "path";
 import * as bcrypt from "bcrypt";
 import * as fs from "fs/promises";
-import * as emailUtils from "../utils/email.js";
 
 export default class User {
     constructor(email) {
         this.email = email;
-        this._dbPath = "./private/db" + emailUtils.fsEscape(email);
+        this._dbPath = "./private/db" + fsEscape(email);
     }
     async setPassword(password) {
         const mkdirPromise = fs.mkdir(dirname(this._dbPath), {recursive: true});
@@ -42,4 +41,17 @@ export default class User {
             }
         }
     }
+}
+
+/* Replaces all occurrences of '/' with '..', which is illegal in email addresses,
+ * and breaks the address into directories on filename limit boundaries.
+ */
+function fsEscape(email) {
+    let escaped = email.replace(/[/]/g, "..");
+    let path = "";
+    while (escaped) {
+        path += "/" + escaped.slice(0, 255);
+        escaped = escaped.slice(256);
+    }
+    return path;
 }
