@@ -1,4 +1,3 @@
-import User from "./models/user.js";
 import btcRate from "./controllers/btcRate.js";
 import * as user from "./controllers/user.js";
 import express from "express";

@@ -1,5 +1,4 @@
 import User from "../../models/user.js";
-import {jest} from "@jest/globals";
 import {tmpdir} from "os";
 import {mkdtemp} from "fs/promises";
 import * as fc from "fast-check";
