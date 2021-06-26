@@ -30,9 +30,9 @@ export function parse(request, response, next) {
 }
 
 export async function create(request, response) {
-    response.sendStatus(200);
     const user = new User(request.email);
     await user.setPassword(request.password);
+    response.sendStatus(200);
 }
 
 export const login = secret => async (request, response) => {
