@@ -1,11 +1,11 @@
 import App from "../app.js";
 import request from "supertest";
 import {tmpdir} from "os";
-import {mkdtemp} from "fs/promises";
+import {promises as fs} from "fs";
 
 let app;
 
-beforeAll(async () => app = new App("JWT_SECRET", null, await mkdtemp(tmpdir() + "/")));
+beforeAll(async () => app = new App("JWT_SECRET", null, await fs.mkdtemp(tmpdir() + "/")));
 
 test("/btcRate is unaccessible without authentication", async () => {
     const response = await request(app).get("/btcRate");

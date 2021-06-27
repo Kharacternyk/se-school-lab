@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import {dirname} from "path";
 import * as bcrypt from "bcrypt";
-import * as fs from "fs/promises";
+import {promises as fs} from "fs";
 
 export default class User {
     constructor(email, dbDir) {

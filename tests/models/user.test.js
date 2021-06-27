@@ -1,11 +1,11 @@
 import User from "../../models/user.js";
 import {tmpdir} from "os";
-import {mkdtemp} from "fs/promises";
+import {promises as fs} from "fs";
 import * as fc from "fast-check";
 
 let dbDir;
 
-beforeAll(async () => dbDir = await mkdtemp(tmpdir() + "/"));
+beforeAll(async () => dbDir = await fs.mkdtemp(tmpdir() + "/"));
 
 test("create/login/authenticate a user", () => fc.assert(fc.asyncProperty(
     fc.string({minLength: 1}),
