@@ -7,6 +7,9 @@ tokens](https://github.com/auth0/node-jsonwebtoken) for authentication. The
 bitcoin conversion rate is provided by [the Coinpaprika API
 client](https://github.com/coinpaprika/coinpaprika-api-nodejs-client).
 
+The client-server interaction looks like this:
+![Client-Server interaction graph](client-server.svg)
+
 ### Quality Assurance
 
 [![Node.js
