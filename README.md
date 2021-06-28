@@ -10,6 +10,10 @@ client](https://github.com/coinpaprika/coinpaprika-api-nodejs-client).
 The client-server interaction looks like this:
 ![Client-Server interaction graph](client-server.svg)
 
+> If you use the GitHub's dark theme, click
+> [here](https://raw.githubusercontent.com/Kharacternyk/se-school-lab/master/client-server.svg)
+> to see the image on a light background.
+
 ### Quality Assurance
 
 [![Node.js
