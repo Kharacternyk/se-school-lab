@@ -1,11 +1,11 @@
 import App from "../app.js";
+import UserStorage from "../services/userStorage.js";
+import TokenFactory from "../models/tokenFactory.js";
 import request from "supertest";
-import {tmpdir} from "os";
-import {promises as fs} from "fs";
 
-let app;
-
-beforeAll(async () => app = new App("JWT_SECRET", null, await fs.mkdtemp(tmpdir() + "/")));
+const userStorage = new UserStorage();
+const tokenFactory = new TokenFactory("JWT_SECRET", {});
+const app = new App(userStorage, tokenFactory);
 
 test("/btcRate is unaccessible without authentication", async () => {
     const response = await request(app).get("/btcRate");
@@ -45,5 +45,5 @@ test("/btcRate is accessible with a valid token", async () => {
     const response = await request(app).get("/btcRate").auth(token, {type: "bearer"});
     expect(response.status).toBe(200);
     expect(response.body.rate).toBeGreaterThan(0);
-    expect(response.body.user.email).toEqual(user.email);
+    expect(response.body.user).toEqual(user.email);
 });
