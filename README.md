@@ -20,10 +20,10 @@ graph](client-server.svg)
 CI](https://github.com/Kharacternyk/se-school-lab/actions/workflows/node.js.yml/badge.svg)](https://github.com/Kharacternyk/se-school-lab/actions/workflows/node.js.yml)
 
 `npm test` runs [an end-to-end test](tests/end-to-end.test.js), [unit
-tests](tests/unit/), [integration tests](tests/integration) and [a fuzzy test
-of the storage service](tests/fuzzy). A GitHub action has been setup to run
-the tests on the tip of the master branch.
-
+tests](tests/unit/), [integration tests](tests/integration) and [a
+property-based test of the storage
+service](tests/property-based/userStorageService.test.js). A GitHub action has been
+setup to run the tests on the tip of the master branch.
 The API can also be manually tested with an HTTP client, e.g., `curl` or
 Postman.  In this case, the authorization header must be in the form of `Bearer
 [JSON WEB TOKEN]` whilst accessing the /btcRate endpoint. Another thing to keep

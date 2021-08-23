@@ -11,7 +11,7 @@ const testOptions = {
     interruptAfterTimeLimit: 4000,
 }
 
-test("save/get random users", () => fc.assert(fc.asyncProperty(
+test("every valid user can be saved and read back", () => fc.assert(fc.asyncProperty(
     fc.emailAddress(),
     fc.string({minLength: 1}),
     async (email, hashedPasswordStub) => {
