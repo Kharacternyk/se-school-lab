@@ -11,19 +11,15 @@ setup to run the tests on the tip of the master branch.
 
 ### Architecture Overview
 
+![Architecture graph](docs/arch.svg)
+![Client-Server interaction graph](docs/client-server.svg)
+
 The application runs on Node.js and uses the Express framework for routing,
 [the bcrypt library](https://github.com/kelektiv/node.bcrypt.js) to encrypt
 user credentials, and [JSON web
 tokens](https://github.com/auth0/node-jsonwebtoken) for authentication. The
 bitcoin conversion rate is provided by [the Coinpaprika API
 client](https://github.com/coinpaprika/coinpaprika-api-nodejs-client).
-
-The client-server interaction looks like this: ![Client-Server interaction
-graph](client-server.svg)
-
-> If you use the GitHub's dark theme, click
-> [here](https://raw.githubusercontent.com/Kharacternyk/se-school-lab/master/client-server.svg)
-> to see the image on a light background.
 
 ### Database Implementation
 
