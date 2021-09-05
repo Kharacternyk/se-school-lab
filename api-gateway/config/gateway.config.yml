@@ -1,0 +1,31 @@
+http:
+  port: 8010
+apiEndpoints:
+  user:
+    host: '*'
+    paths: '/user/*'
+  btcRate:
+    host: '*'
+    paths: '/btcRate'
+serviceEndpoints:
+  user:
+    url: 'http://localhost:8011'
+  btcRate:
+    url: 'http://localhost:8012'
+policies:
+  - proxy
+pipelines:
+  userProxy:
+    apiEndpoints:
+      - user
+    policies:
+      - proxy:
+        - action:
+            serviceEndpoint: user
+  btcRateProxy:
+    apiEndpoints:
+      - btcRate
+    policies:
+      - proxy:
+        - action:
+            serviceEndpoint: btcRate

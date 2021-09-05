@@ -1,0 +1,20 @@
+{
+  "name": "se-school-lab-btcrate-microservice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+  },
+  "author": "Nazar Vinnichuk",
+  "license": "MIT",
+  "dependencies": {
+    "@coinpaprika/api-nodejs-client": "^1.2.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "jest": "^27.0.5"
+  }
+}

@@ -1,13 +1,11 @@
 import App from "../app.js";
-import BtcRateService from "../services/btcRate.js";
 import UserStorage from "../services/userStorage.js";
 import TokenFactory from "../models/tokenFactory.js";
 import request from "supertest";
 
-const btcRateService = new BtcRateService();
 const userStorage = new UserStorage();
 const tokenFactory = new TokenFactory("JWT_SECRET", {});
-const app = new App(btcRateService, userStorage, tokenFactory);
+const app = new App(userStorage, tokenFactory);
 
 test("/btcRate is unaccessible without authentication", async () => {
     const response = await request(app).get("/btcRate");
